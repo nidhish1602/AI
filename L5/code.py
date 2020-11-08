@@ -39,7 +39,7 @@ class SimpleReflexVacuumAgent(Environment):
                     Environment.locationCondition['B'] = 0;
                     Score += 1
                     print ("Location B has been Cleaned.")
-[12:13 PM] ニテシュ: else:
+             else:
                 # move to B
                 Score -= 1
                 print ("Moving to Location B...")
