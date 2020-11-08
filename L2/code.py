@@ -67,16 +67,26 @@ def iddfs(src,target,depth):
     return False 
 
 
-#Test 1
-src = [1,2,3,-1,4,5,6,7,8]
-target = [1,2,3,4,5,6,-1,7,8]           
+# Test 1
+src = [1, 2, 3, -1, 4, 5, 6, 7, 8]
+target = [1, 2, 3, 4, 5, 6, -1, 7, 8]
 depth = 4
+print('Source:')
+print(*src)
+print('Target:')
+print(*target)
+print("depth:", depth)
 
-print(iddfs(src, target, depth)) # Minimum depth should be 2
+print(iddfs(src, target, depth))  # Minimum depth should be 2
 
 # Test 2
-src1 = [1,2,3,-1,4,5,6,7,8] 
-target1=[1,2,3,6,4,5,-1,7,8]
-
+src1 = [1, 2, 3, -1, 4, 5, 6, 7, 8]
+target1 = [1, 2, 3, 6, 4, 5, -1, 7, 8]
 depth1 = 1
-print(iddfs(src1, target1, depth1)) 
+
+print('\nSource:')
+print(*src1)
+print('Target:')
+print(*target1)
+print("depth:", depth1)
+print(iddfs(src1, target1, depth1))
