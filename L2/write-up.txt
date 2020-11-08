@@ -1,0 +1,24 @@
+﻿Name: Nidhish Lakhinana
+USN: 1BM18CS059
+DATE: 07-11-2020
+
+
+LAB 2: Solve the 8 puzzle problem.
+Explanation: The puzzle consists of 8 tiles, one empty space and they’re moved to reach the goal state from start state. Start and Goal configurations (also called state) of the puzzle are provided. The puzzle can be solved by moving the tiles one by one in the single empty space and thus achieving the Goal configuration. The tiles in the initial(start) state can be swapped with empty space in a particular order and thus achieve the goal state.
+Rules for solving the puzzle: Instead of moving the tiles in the empty space, we can visualize moving the empty space in place of the tile, basically swapping the tile with the empty space. The empty space can only move in four directions viz.,
+1. Up
+2. Down
+3. Right or
+4. Left
+The empty space cannot move diagonally and can take only one step at a time (i.e. move the empty space one position at a time).
+
+
+
+
+Implementation of algorithm:
+Below are the functions used in the implementation of a* search.
+
+
+possible_moves() as the name suggests checks all the possible moves 
+dfs() stores all the states, checks if source = goal state
+gen() decides which move (up, down, left or right) is appropriate
