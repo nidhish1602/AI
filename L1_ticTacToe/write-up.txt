@@ -1,0 +1,15 @@
+﻿Name: Nidhish Lakhinana
+USN: 1BM18CS059
+DATE: 07-11-2020
+
+
+LAB 1: Implement Tic –Tac –Toe Game.
+Explanation: The puzzle consists of 9 tiles. The users starts first, then the AI and the games goes on until one of them succeeds in placing three of their marks in a horizontal, vertical, or diagonal row
+Rules for solving the puzzle: Both the users get to place their marks anywhere on the board and the first one to complete a horizontal, vertical, or diagonal row wins. Users need to strategize their moves to give them a higher chance of winning the game. 
+How AI plays Tic-Tac-Toe as an opponent:
+AI takes the user inputs and remaining empty spaces into consideration and gives the best move. The following functions are used to check and analysis the situation
+
+
+spaceIsFree checks for empty space
+compMove verifies all conditions, like if user won, if not it’ll block the corners and sides
+selectRandom is the AI’s move based on compMove
