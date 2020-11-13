@@ -31,7 +31,7 @@ def astar(src, target):
             print_grid(state)
             if g < 2:
                 if state == target:
-                    print("Success")
+                    print("SOLUTION")
                     return
                 moves += [move for move in possible_moves(state, visited_states) if move not in moves]
 
