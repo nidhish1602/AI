@@ -45,17 +45,7 @@ def checkResolution(clauses, query):
     else:
         print("Contradiction succeeded, Knowledge Base doesn't entail the query, no empty set produced after resolution")
 
-# Test 1
-clauses = input('Enter the clauses (separated by whitespace): ').split()
-query = input('Enter the query: ')
-checkResolution(clauses, query)
-
-nter the clauses (separated by whitespace): A^B B^C
-Enter the query: C
-Trying to prove (A^B)^(B^C)^(~C) by contradiction....
-Contradiction failed, Knowledge Base entails the query, proved by resolution
-
-# Test 2
+        
 clauses = input('Enter the clauses (separated by whitespace): ').split()
 query = input('Enter the query: ')
 checkResolution(clauses, query)
