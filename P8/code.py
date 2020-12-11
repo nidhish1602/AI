@@ -1,93 +1,110 @@
-no_of_pred = 0
-no_of_arg = [None for i in range(10)]
-nouse = ''
-predicate = [None for i in range(10)]
-argument = [[None for i in range(10)] for i in range(10)]
+import re
 
+def getAttributes(expr):
+    expr = expr.split("(")[1:]
+    expr = "(".join(expr)
+    expr = expr[:-1]
+    expr = re.split("(?<!\(.),(?!.\))", expr)
+    return expr
 
-def main():
-    global no_of_pred
-    ch = 'y'
-    while(ch == 'y'):
-        print("=========PROGRAM FOR UNIFICATION=========")
-        no_of_pred = int(input("Enter Number of Predicates:"))
-        for i in range(no_of_pred):
-            # nouse=input() #   //to accept "enter" as a character
-            print("Enter Predicate ", (i+1), " :")
-            predicate[i] = input()
-            print("Enter No.of Arguments for Predicate ", predicate[i], " :")
-            no_of_arg[i] = int(input())
+def getInitialPredicate(expr):
+    return expr.split("(")[0]
 
-            for j in range(no_of_arg[i]):
-                print("Enter argument ", j+1, " :")
-                argument[i][j] = input()
+def isConstant(char):
+    return char.isupper() and len(char) == 1
 
-        display()
-        chk_arg_pred()
-        ch = input("Do you want to continue(y/n):   ")
+def isVariable(char):
+    return char.islower() and len(char) == 1
 
+def replaceAttributes(expr, old, new):
+    attr = getAttributes(expr)
+    for index, val in enumerate(attr):
+        if val == old:
+            attr[index] = new
+    predicate = getInitialPredicate(expr)
+    return predicate + "(" + ",".join(attr) + ")"
 
-def display():
+def apply(expr, subs):
+    for sub in subs:
+        new, old = sub  #substitution is a tuple of 2 values (new, old)
+        expr = replaceAttributes(expr, old, new)
+    return expr
 
-    print("=======PREDICATES ARE======")
-    for i in range(no_of_pred):
-        print(predicate[i], "(", end="")
-        for j in range(no_of_arg[i]):
-            print(argument[i][j], end="")
-            if(j != no_of_arg[i]-1):
-                print(",", end="")
-        print(")")
+def checkOccurs(var, expr):
+    if expr.find(var) == -1:
+        return False
+    return True
 
+def getFirstPart(expr):
+    attr = getAttributes(expr)
+    return attr[0]
 
-# /*==========UNIFY FUNCTION=========*/
+def getRemainingPart(expr):
+    predicate = getInitialPredicate(expr)
+    attr = getAttributes(expr)
+    newExpr = predicate + "(" + ",".join(attr[1:]) + ")"
+    return newExpr
 
-def unify():
-    flag = 0
-    for i in range(no_of_pred-1):
-        for j in range(no_of_arg[i]):
-            if(argument[i][j] != argument[i+1][j]):
-                if(flag == 0):
-                    print("======SUBSTITUTION IS======")
-                    print(argument[i+1][j], "/", argument[i][j])
-                    flag += 1
+def unify(exp1, exp2):
+    if exp1 == exp2:
+        return []
 
-        if(flag == 0):
-            print("Arguments are Identical...")
-            print("No need of Substitution")
+    if isConstant(exp1) and isConstant(exp2):
+        if exp1 != exp2:
+            return False
 
+    if isConstant(exp1):
+        return [(exp1, exp2)]
 
-def chk_arg_pred():
-    pred_flag = 0
-    arg_flag = 0
+    if isConstant(exp2):
+        return [(exp2, exp1)]
 
-   # /*======Checking Prediactes========*/
-    for i in range(no_of_pred-1):
-        if(predicate[i] != predicate[i+1]):
-            print("Predicates not same..")
-            print("Unification cannot progress!")
-            pred_flag = 1
-            break
+    if isVariable(exp1):
+        if checkOccurs(exp1, exp2):
+            return False
+        else:
+            return [(exp2, exp1)]
 
-   # /*=====Chking No of Arguments====*/
+    if isVariable(exp2):
 
-    if(pred_flag != 1):
-        ind = 0
-        key = no_of_arg[ind]
-        l = len(no_of_arg)
-        for i in range(0, key-1):
-            if i >= key:
-                continue
-            if ind != l-1:
-                ind += 1
-                key = no_of_arg[ind]
-            if(no_of_arg[i] != no_of_arg[i+1]):
+        if checkOccurs(exp2, exp1):
+            return False
+        else:
+            return [(exp1, exp2)]
 
-                print("Arguments Not Same..!")
-                arg_flag = 1
-                break
+    if getInitialPredicate(exp1) != getInitialPredicate(exp2):
+        print("Predicates do not match. Cannot be unified")
+        return False
 
-        if(arg_flag == 0 and pred_flag != 1):
-            unify()
+    attributeCount1 = len(getAttributes(exp1))
+    attributeCount2 = len(getAttributes(exp2))
+    if attributeCount1 != attributeCount2:
+        return False
 
+    head1 = getFirstPart(exp1)
+    head2 = getFirstPart(exp2)
+    initialSub = unify(head1, head2)
+    if not initialSub:
+        return False
+    if attributeCount1 == 1:
+        return initialSub
 
-main()
+    tail1 = getRemainingPart(exp1)
+    tail2 = getRemainingPart(exp2)
+
+    if initialSub != []:
+        tail1 = apply(tail1, initialSub)
+        tail2 = apply(tail2, initialSub)
+
+    remainingSub = unify(tail1, tail2)
+    if not remainingSub:
+        return False
+
+    initialSub.extend(remainingSub)
+    return initialSub
+
+exp1 = input("Expression1: ")
+exp2 = input("Expression2: ")
+subs = unify(exp1, exp2)
+print("Substitutions: ")
+print(subs)
