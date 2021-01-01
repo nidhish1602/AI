@@ -94,7 +94,3 @@ while n:
   statement = input("Enter FOL statement: ")
   print(f"FOL converted to CNF: {Skolemization(fol_to_cnf(statement))} \n\n")
   n -= 1
-
-
-#print(Skolemization(fol_to_cnf("∀x[∀y[animal(y)=>loves(x,y)]]=>[∃z[loves(z,x)]]")))
-#print(fol_to_cnf("[american(x)&weapon(y)&sells(x,y,z)&hostile(z)]=>criminal(x)"))
